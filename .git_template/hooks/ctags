@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+source ~/.zshrc 2>&1 > /dev/null
+
+PATH="/usr/local/bin:$PATH"
+dir="`git rev-parse --git-dir`"
+trap 'rm -f "$dir/$$.tags"' EXIT
+git ls-files | \
+  ctags --tag-relative=yes -L - -f"$dir/$$.tags" --languages=ruby,sql,go
+mv "$dir/$$.tags" "tags"
